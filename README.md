@@ -1,2 +1,2 @@
 # reviewpls
-NPM package for reviewpls
+Securely send git diffs for teammates to comment
