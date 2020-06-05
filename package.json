@@ -1,0 +1,19 @@
+{
+  "name": "reviewpls",
+  "version": "0.0.1",
+  "description": "Securely send git diffs for teammates to comment",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/1313labs/reviewpls.git"
+  },
+  "author": "1313labs",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/1313labs/reviewpls/issues"
+  },
+  "homepage": "https://github.com/1313labs/reviewpls#readme"
+}
