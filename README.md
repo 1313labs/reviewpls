@@ -17,3 +17,9 @@ yarn global add reviewpls
   ```
 - Done, now you can run `reviewpls` and it will run the stuff inside this folder.
 You can easily change the code and run `reviewpls` again to see the changes.
+
+## Updating package
+
+- Increase the version on `package.json`
+
+- Run `npm publish`

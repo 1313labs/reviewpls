@@ -1,6 +1,6 @@
 {
   "name": "reviewpls",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Securely send git diffs for teammates to comment",
   "main": "index.js",
   "bin": "./bin/reviewpls.js",
