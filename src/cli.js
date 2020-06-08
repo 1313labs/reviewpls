@@ -1,15 +1,24 @@
+const axios = require('axios');
 
 function run(args) {
   let content = "";
 
-  const onStreamEnded = () => {
+  async function onStreamEnded() {
     if (content === "") {
       return printInstructions();
     }
 
     const encryptionKey = randomEncryptionKey();
     const encryptedContent = encryptContent(content, encryptionKey);
-    const documentUrl = upload(encryptedContent);
+
+    let documentUrl;
+    try {
+      documentUrl = await upload(encryptedContent);
+    } catch (_error) {
+      console.log("Error while uploading diff, try again later")
+      return;
+    }
+
     printDocument(documentUrl, encryptionKey);
   }
 
@@ -43,8 +52,12 @@ function encryptContent(content, encryptionKey) {
   return content;
 }
 
-function upload(encryptedContent) {
-  return "http://reviewpls.1313labs.com/some-random-slug"
+async function upload(encryptedContent) {
+  const response = await axios.post("http://localhost:3000/api/documents", {
+    some: 'params',
+  })
+
+  return response.data.url;
 }
 
 function printDocument(documentUrl, encryptionKey) {

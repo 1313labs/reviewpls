@@ -1,6 +1,6 @@
 {
   "name": "reviewpls",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Securely send git diffs for teammates to comment",
   "main": "index.js",
   "bin": "./bin/reviewpls.js",
@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/1313labs/reviewpls/issues"
   },
-  "homepage": "https://github.com/1313labs/reviewpls#readme"
+  "homepage": "https://github.com/1313labs/reviewpls#readme",
+  "dependencies": {
+    "axios": "^0.19.2"
+  }
 }

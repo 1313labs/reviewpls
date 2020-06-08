@@ -22,4 +22,4 @@ You can easily change the code and run `reviewpls` again to see the changes.
 
 - Increase the version on `package.json`
 
-- Run `npm publish`
+- Run `npm publish` derp
