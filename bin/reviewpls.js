@@ -2,4 +2,6 @@
 
 "use strict";
 
-require("../src/cli").run(process.argv.slice(2));
+let [node_path, cli_path, ...args] = process.argv;
+
+require("../src/cli").run(args);
