@@ -1,4 +1,10 @@
-const axios = require('axios');
+const axios = require("axios");
+
+let BASE_API_URL = "http://reviewpls.1313labs.com";
+
+if (process.env.NODE_ENV === "development") {
+  BASE_API_URL = "http://localhost:3000";
+}
 
 function run(args) {
   let content = "";
@@ -15,7 +21,7 @@ function run(args) {
     try {
       documentUrl = await upload(encryptedContent);
     } catch (_error) {
-      console.log("Error while uploading diff, try again later")
+      console.log("Error while uploading diff, try again later");
       return;
     }
 
@@ -24,18 +30,18 @@ function run(args) {
 
   const onDataReceived = (chunk) => {
     content += chunk;
-  }
+  };
 
-  process.stdin.setEncoding('utf8');
-  process.stdin.on('data', onDataReceived);
-  process.stdin.on('end', onStreamEnded);
+  process.stdin.setEncoding("utf8");
+  process.stdin.on("data", onDataReceived);
+  process.stdin.on("end", onStreamEnded);
 
   setTimeout(() => {
     if (content !== "") {
       return;
     }
 
-    process.stdin.emit('end');
+    process.stdin.emit("end");
   }, 100);
 }
 
@@ -53,9 +59,11 @@ function encryptContent(content, encryptionKey) {
 }
 
 async function upload(encryptedContent) {
-  const response = await axios.post("http://localhost:3000/api/documents", {
-    some: 'params',
-  })
+  console.log(`"BASE_API : ${BASE_API_URL}`);
+  console.log(`"NODE_ENV : ${process.env.NODE_ENV}`);
+  const response = await axios.post(`${BASE_API_URL}/api/documents`, {
+    some: "params",
+  });
 
   return response.data.url;
 }
@@ -74,4 +82,4 @@ function printDocument(documentUrl, encryptionKey) {
 
 module.exports = {
   run,
-}
+};
