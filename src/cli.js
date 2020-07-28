@@ -1,13 +1,13 @@
 const axios = require("axios");
 
-let BASE_API_URL = "http://reviewpls.1313labs.com";
-
-if (process.env.NODE_ENV === "development") {
-  BASE_API_URL = "http://localhost:3000";
-}
+let BASE_API_URL = "http://reviewpls.1313labs.com/api";
 
 function run(args) {
   let content = "";
+
+  if (args.includes("--dev")) {
+    BASE_API_URL = "http://localhost:3000/api";
+  }
 
   async function onStreamEnded() {
     if (content === "") {
