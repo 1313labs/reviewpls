@@ -1,4 +1,5 @@
 const axios = require("axios");
+const uuid = require("uuid");
 
 let BASE_API_URL = "http://reviewpls.1313labs.com/api";
 
@@ -59,11 +60,22 @@ function encryptContent(content, encryptionKey) {
 }
 
 async function upload(encryptedContent) {
-  console.log(`"BASE_API : ${BASE_API_URL}`);
-  console.log(`"NODE_ENV : ${process.env.NODE_ENV}`);
-  const response = await axios.post(`${BASE_API_URL}/api/documents`, {
-    some: "params",
-  });
+  const headers = { headers: { "Content-Type": "application/json" } };
+  const payload = {
+    document: {
+      uuid: uuid.v4(),
+      encrypted_object: {
+        content_type: "text/plain",
+        data: encryptedContent,
+      },
+    },
+  };
+
+  const response = await axios.post(
+    `${BASE_API_URL}/documents`,
+    payload,
+    headers
+  );
 
   return response.data.url;
 }
