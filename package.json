@@ -18,7 +18,6 @@
   },
   "homepage": "https://github.com/1313labs/reviewpls#readme",
   "dependencies": {
-    "axios": "^0.19.2",
-    "uuid": "^8.3.0"
+    "axios": "^0.19.2"
   }
 }
