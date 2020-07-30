@@ -1,26 +1,25 @@
-const axios = require("axios");
 const log = console.log;
-
-let BASE_API_URL = "http://reviewpls.1313labs.com/api";
+const { randomEncryptionKey, encryptContent } = require("./encryption");
+const { upload, getApiUrl } = require("./api");
 
 function run(args) {
   let content = "";
-
-  if (args.includes("--dev")) {
-    BASE_API_URL = "http://localhost:3000/api";
-  }
+  const apiUrl = getApiUrl(args);
 
   async function onStreamEnded() {
     if (content === "") {
       return printInstructions();
     }
+    log("Creating encryption key...");
+    const encryptionKey = await randomEncryptionKey();
 
-    const encryptionKey = randomEncryptionKey();
-    const encryptedContent = encryptContent(content, encryptionKey);
+    log("Encrypting your diff...");
+    const encryptedContent = await encryptContent(content, encryptionKey);
 
     let documentUrl;
     try {
-      documentUrl = await upload(encryptedContent);
+      log("Sending encrypted diff to our backend...");
+      documentUrl = await upload(encryptedContent, apiUrl);
     } catch (_error) {
       log("Error while uploading diff, try again later");
       return;
@@ -51,36 +50,8 @@ function printInstructions() {
   log('Something like "git diff | reviewpls"');
 }
 
-function randomEncryptionKey() {
-  return "exampleRandomEncryptionKey";
-}
-
-function encryptContent(content, encryptionKey) {
-  return content;
-}
-
-async function upload(encryptedContent) {
-  const headers = { headers: { "Content-Type": "application/json" } };
-  const payload = {
-    document: {
-      encrypted_object: {
-        content_type: "text/plain",
-        data: encryptedContent,
-      },
-    },
-  };
-
-  const response = await axios.post(
-    `${BASE_API_URL}/documents`,
-    payload,
-    headers
-  );
-
-  return response.data.url;
-}
-
 function printDocument(documentUrl, encryptionKey) {
-  log("Git diff uploaded to reviewpls");
+  log("Diff successfully uploaded to reviewpls!");
   log("");
   log("You can access your file using the following:");
   log(`URL: ${documentUrl}`);

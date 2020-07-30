@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/1313labs/reviewpls#readme",
   "dependencies": {
-    "axios": "^0.19.2"
+    "axios": "^0.19.2",
+    "libsodium-wrappers": "^0.7.6"
   }
 }
