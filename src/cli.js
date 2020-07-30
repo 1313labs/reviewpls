@@ -1,13 +1,14 @@
 const axios = require("axios");
+const log = console.log;
 
-let BASE_API_URL = "http://reviewpls.1313labs.com";
-
-if (process.env.NODE_ENV === "development") {
-  BASE_API_URL = "http://localhost:3000";
-}
+let BASE_API_URL = "http://reviewpls.1313labs.com/api";
 
 function run(args) {
   let content = "";
+
+  if (args.includes("--dev")) {
+    BASE_API_URL = "http://localhost:3000/api";
+  }
 
   async function onStreamEnded() {
     if (content === "") {
@@ -21,7 +22,7 @@ function run(args) {
     try {
       documentUrl = await upload(encryptedContent);
     } catch (_error) {
-      console.log("Error while uploading diff, try again later");
+      log("Error while uploading diff, try again later");
       return;
     }
 
@@ -46,8 +47,8 @@ function run(args) {
 }
 
 function printInstructions() {
-  console.log("You need to pipe a git diff into reviewpls");
-  console.log('Something like "git diff | reviewpls"');
+  log("You need to pipe a git diff into reviewpls");
+  log('Something like "git diff | reviewpls"');
 }
 
 function randomEncryptionKey() {
@@ -59,25 +60,35 @@ function encryptContent(content, encryptionKey) {
 }
 
 async function upload(encryptedContent) {
-  console.log(`"BASE_API : ${BASE_API_URL}`);
-  console.log(`"NODE_ENV : ${process.env.NODE_ENV}`);
-  const response = await axios.post(`${BASE_API_URL}/api/documents`, {
-    some: "params",
-  });
+  const headers = { headers: { "Content-Type": "application/json" } };
+  const payload = {
+    document: {
+      encrypted_object: {
+        content_type: "text/plain",
+        data: encryptedContent,
+      },
+    },
+  };
+
+  const response = await axios.post(
+    `${BASE_API_URL}/documents`,
+    payload,
+    headers
+  );
 
   return response.data.url;
 }
 
 function printDocument(documentUrl, encryptionKey) {
-  console.log("Git diff uploaded to reviewpls");
-  console.log("");
-  console.log("You can access your file using the following:");
-  console.log(`URL: ${documentUrl}`);
-  console.log(`Password: ${encryptionKey}`);
-  console.log("");
-  console.log("or directly through:");
-  console.log("");
-  console.log(`${documentUrl}#${encryptionKey}`);
+  log("Git diff uploaded to reviewpls");
+  log("");
+  log("You can access your file using the following:");
+  log(`URL: ${documentUrl}`);
+  log(`Password: ${encryptionKey}`);
+  log("");
+  log("or directly through:");
+  log("");
+  log(`${documentUrl}#${encryptionKey}`);
 }
 
 module.exports = {
