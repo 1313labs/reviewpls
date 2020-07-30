@@ -10,12 +10,15 @@ function run(args) {
     if (content === "") {
       return printInstructions();
     }
-
+    log("Creating encryption key...");
     const encryptionKey = await randomEncryptionKey();
+
+    log("Encrypting your diff...");
     const encryptedContent = await encryptContent(content, encryptionKey);
 
     let documentUrl;
     try {
+      log("Sending encrypted diff to our backend...");
       documentUrl = await upload(encryptedContent, apiUrl);
     } catch (_error) {
       log("Error while uploading diff, try again later");
@@ -48,7 +51,7 @@ function printInstructions() {
 }
 
 function printDocument(documentUrl, encryptionKey) {
-  log("Git diff uploaded to reviewpls");
+  log("Diff successfully uploaded to reviewpls!");
   log("");
   log("You can access your file using the following:");
   log(`URL: ${documentUrl}`);
